@@ -1,7 +1,22 @@
-all: publisher
+CC = gcc
+CFLAGS = -Werror
+LDFLAGS = -lubus \
+		  -lubox \
+		  -lblobmsg_json \
+		  -ljson-c \
+		  -lcurl
 
-publisher:
-	$(CC) publisher.c -lubus -lubox -lblobmsg_json -ljson-c -lcurl -o $@
+TARGET = publisher
+OBJS += publisher.o
 
-clear:
+all: $(TARGET)
+
+$(TARGET):$(OBJS)
+	$(CC) $(OBJS) $(LDFLAGS) -o $@
+
+publisher.o:publisher.c
+	$(CC) $(CFLAGS) -c publisher.c  -o $@
+
+clean:
 	rm $(TARGET) -rf
+	rm $(OBJS) -rf
